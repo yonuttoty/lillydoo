@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Address;
 use AppBundle\Form\AddressType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -77,15 +78,21 @@ class DefaultController extends Controller
     {
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $address->getPicture();
-            if ($file instanceof UploadedFile) {
+            if (!empty($request->files)) {
+                $file = new File($address->getPicture());
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                $file->move($this->getParameter('address_directory'), $file->getClientOriginalName());
+                $file->move($this->getParameter('address_directory'), $fileName);
                 $address->setPicture($fileName);
             }
+
+            // Symfony way to do it but because of problems with xampp and temp files a hack was needed
+//            if ($file instanceof UploadedFile) {
+//                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+//                $file->move($this->getParameter('address_directory'), $file->getClientOriginalName());
+//                $address->setPicture($fileName);
+//            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($address);
             $entityManager->flush();

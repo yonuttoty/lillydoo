@@ -2,7 +2,7 @@
 {% block content %}
     <div>
         {% for address in addresses %}
-            <img src="{{ asset('/uploads/images/' ~ address.getPicture) }}" width="200" height="100" alt="Face"/>
+            <img src="{{ asset('public/uploads/images/' ~ address.getPicture) }}" width="200" height="100" alt="Face"/>
             First Name: {{ address.getFirstName }} <br>
             Last Name: {{ address.getLastName }} <br>
             Email: {{ address.getEmail }} <br>
