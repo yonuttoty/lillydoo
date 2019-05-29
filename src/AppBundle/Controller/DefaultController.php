@@ -3,6 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Address;
+use AppBundle\Form\AddressType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,21 +14,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="adress_homepage")
+     * @Route("/", name="address_homepage")
      */
-    public function viewAction(Request $request): Response
+    public function viewAction(): Response
     {
-        $address = $this->getDoctrine()
+        $addresses = $this->getDoctrine()
             ->getRepository(Address::class)
-            ->find(1);
+            ->findAll();
 
-        return $this->render('@App/base.html.twig', [
-            'email' => $address->getEmail(),
+        return $this->render('@App/address/list.html.twig', [
+            'addresses' => $addresses,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="adress_edit")
+     * @Route("/{id}/edit", name="address_edit")
      *
      * @param Request $request
      * @param int     $id
@@ -33,8 +36,34 @@ class DefaultController extends Controller
      */
     public function editAction(Request $request, $id): Response
     {
+        $address = $this->getDoctrine()
+            ->getRepository(Address::class)
+            ->findOneBy([
+                'id'    => $id
+            ]);
+
+        $form = $this->createForm(AddressType::class, $address);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $file */
+            $file = $address->getPicture();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            try {
+                $file->move($this->getParameter('address_directory'), $fileName);
+            } catch (FileException $exception) {
+                $fileName = '';
+            }
+            $address->setPicture($fileName);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($address);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('address_homepage');
+        }
+
         return $this->render('@App/address/edit.html.twig', [
-            'id'    => $id
+            'form'  => $form->createView()
         ]);
     }
 
@@ -46,23 +75,26 @@ class DefaultController extends Controller
      */
     public function createAction(Request $request): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $address = new Address();
-        $address->setFirstName('Ioan');
-        $address->setLastName('Totalca');
-        $address->setStreet('street');
-        $address->setStreetNumber(12);
-        $address->setZip(12345);
-        $address->setCountry('Romania');
-        $address->setPhoneNumber(123456789);
-        $address->setBirthday(\DateTime::createFromFormat('Y-m-d', '2019-01-01'));
-        $address->setEmail('ioan@c.b');
-        $address->setPicture('adress.jpeg');
+        $form = $this->createForm(AddressType::class, $address);
 
-        $entityManager->persist($address);
-        $entityManager->flush();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $address->getPicture();
+            if ($file instanceof UploadedFile) {
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($this->getParameter('address_directory'), $file->getClientOriginalName());
+                $address->setPicture($fileName);
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($address);
+            $entityManager->flush();
 
-        return $this->render('base.html.twig');
+            return $this->redirectToRoute('address_homepage');
+        }
+
+        return $this->render('@App/address/create.html.twig', [
+            'form'  => $form->createView()
+        ]);
     }
 }

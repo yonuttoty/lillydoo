@@ -59,6 +59,8 @@ class Address
     private $birthday;
 
     /**
+     * @Assert\NotBlank(message="Please, set an email.")
+     *
      * @ORM\Column(type="string", length=100)
      */
     private $email;
@@ -66,15 +68,14 @@ class Address
     /**
      * @ORM\Column(type="string")
      *
-     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
-     * @Assert\File(mimeTypes={ "image/jpeg" })
+     * @Assert\Image()
      */
     private $picture;
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -90,7 +91,7 @@ class Address
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getFirstName()
     {
         return $this->firstName;
     }
@@ -106,7 +107,7 @@ class Address
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName()
     {
         return $this->lastName;
     }
@@ -122,7 +123,7 @@ class Address
     /**
      * @return string
      */
-    public function getStreet(): string
+    public function getStreet()
     {
         return $this->street;
     }
@@ -136,7 +137,7 @@ class Address
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getStreetNumber()
     {
@@ -154,7 +155,7 @@ class Address
     /**
      * @return int
      */
-    public function getZip(): int
+    public function getZip()
     {
         return $this->zip;
     }
@@ -170,7 +171,7 @@ class Address
     /**
      * @return string
      */
-    public function getCountry(): string
+    public function getCountry()
     {
         return $this->country;
     }
@@ -186,7 +187,7 @@ class Address
     /**
      * @return int
      */
-    public function getPhoneNumber(): int
+    public function getPhoneNumber()
     {
         return $this->phoneNumber;
     }
@@ -202,7 +203,7 @@ class Address
     /**
      * @return \DateTime
      */
-    public function getBirthday(): \DateTime
+    public function getBirthday()
     {
         return $this->birthday;
     }
@@ -218,7 +219,7 @@ class Address
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getEmail()
     {
         return $this->email;
     }
@@ -234,7 +235,7 @@ class Address
     /**
      * @return string
      */
-    public function getPicture(): string
+    public function getPicture()
     {
         return $this->picture;
     }

@@ -1,7 +1,21 @@
 {% extends '@App/base.html.twig' %}
 
 {% block content %}
-Hello, World! <br />
-
-Your number is: {{ id }}
+    <h3>Enter Contact</h3>
+    <div class="form">
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+            {{ form_row(form.firstName, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.lastName, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.street, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.streetNumber, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.zip, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.country, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.phoneNumber, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.birthday, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.email, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_row(form.picture, { 'attr': { 'class': 'form-control' }}) }}
+            <br><br>
+            {{ form_row(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

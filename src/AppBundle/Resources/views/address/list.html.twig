@@ -1,0 +1,13 @@
+{% extends '@App/base.html.twig' %}
+{% block content %}
+    <div>
+        {% for address in addresses %}
+            <img src="{{ asset('/uploads/images/' ~ address.getPicture) }}" width="200" height="100" alt="Face"/>
+            First Name: {{ address.getFirstName }} <br>
+            Last Name: {{ address.getLastName }} <br>
+            Email: {{ address.getEmail }} <br>
+            <a href="{{ path('address_edit', {'id': address.id}) }}">Edit</a>
+            <br>
+        {% endfor %}
+    </div>
+{% endblock %}

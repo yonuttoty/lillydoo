@@ -1,0 +1,12 @@
+{% extends '@App/base.html.twig' %}
+
+{% block content %}
+    <h3>Enter Contact</h3>
+    <div class="form">
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        {{ form_widget(form) }}
+        <br><br>
+        <input type="submit" value="Create" class="btn btn-primary">
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
