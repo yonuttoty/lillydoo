@@ -5,18 +5,22 @@
             {{ message }}
         </div>
     {% endfor %}
-    <div>
-        {% for address in addresses %}
-            {% if address.getPicture is not empty %}
-                <img src="{{ asset('public/uploads/images/' ~ address.getPicture) }}" width="200" height="100" alt="Face"/>
-            {% endif %}
-            First Name: {{ address.getFirstName }} <br>
-            Last Name: {{ address.getLastName }} <br>
-            Email: {{ address.getEmail }} <br>
+
+    {% for address in addresses %}
+        <div class="item">
+            <div class="address">
+                {% if address.getPicture is not empty %}
+                    <img src="{{ asset('public/uploads/images/' ~ address.getPicture) }}" width="200" height="100"
+                         alt="Face"/>
+                {% endif %}
+                <p>First Name: {{ address.getFirstName }}</p>
+                <p>Last Name: {{ address.getLastName }}</p>
+                <p>Email: {{ address.getEmail }}</p>
+                <br>
+            </div>
             <a href="{{ path('address_edit', {'id': address.id}) }}">Edit</a>
             <a href="{{ path('address_delete', {'id': address.id}) }}">Remove</a>
-            <br>
-        {% endfor %}
-    </div>
+        </div>
+    {% endfor %}
     <div><a href="{{ path('address_create') }}">Add Entry</a></div>
 {% endblock %}

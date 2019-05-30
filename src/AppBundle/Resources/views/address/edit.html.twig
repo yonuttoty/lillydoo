@@ -1,8 +1,7 @@
 {% extends '@App/base.html.twig' %}
 
 {% block content %}
-    <h3>Enter Contact</h3>
-    <div class="form">
+    <div class="form-group">
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
             {{ form_row(form.firstName, { 'attr': { 'class': 'form-control' }}) }}
             {{ form_row(form.lastName, { 'attr': { 'class': 'form-control' }}) }}
@@ -15,7 +14,8 @@
             {{ form_row(form.email, { 'attr': { 'class': 'form-control' }}) }}
             {{ form_row(form.picture, { 'attr': { 'class': 'form-control' }}) }}
             <br><br>
-            <input type="submit" value="Edit" class="btn btn-primary">
+            <input type="submit" value="Save" class="btn btn-primary">
+            <a href="{{ path('address_homepage') }}" class="btn badge-danger">Back</a>
         {{ form_end(form) }}
     </div>
 {% endblock %}
