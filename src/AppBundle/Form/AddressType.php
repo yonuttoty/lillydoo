@@ -26,14 +26,16 @@ class AddressType extends AbstractType
             ->add('birthday', DateType::class)
             ->add('email', EmailType::class)
             ->add('picture', FileType::class, [
-                'label' => 'Contact Picture'
+                'label' => 'Contact Picture',
+//                'data_class' => null,
+                'required' => false,
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'    => 'AppBundle\Entity\Address'
+            'data_class' => 'AppBundle\Entity\Address'
         ]);
     }
 

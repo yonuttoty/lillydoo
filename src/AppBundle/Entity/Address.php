@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -243,7 +244,7 @@ class Address
     /**
      * @param string $picture
      */
-    public function setPicture(string $picture)
+    public function setPicture($picture)
     {
         $this->picture = $picture;
     }

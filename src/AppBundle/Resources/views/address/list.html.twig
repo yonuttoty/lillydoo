@@ -1,13 +1,22 @@
 {% extends '@App/base.html.twig' %}
 {% block content %}
+    {% for message in app.flashes('success') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div>
         {% for address in addresses %}
-            <img src="{{ asset('public/uploads/images/' ~ address.getPicture) }}" width="200" height="100" alt="Face"/>
+            {% if address.getPicture is not empty %}
+                <img src="{{ asset('public/uploads/images/' ~ address.getPicture) }}" width="200" height="100" alt="Face"/>
+            {% endif %}
             First Name: {{ address.getFirstName }} <br>
             Last Name: {{ address.getLastName }} <br>
             Email: {{ address.getEmail }} <br>
             <a href="{{ path('address_edit', {'id': address.id}) }}">Edit</a>
+            <a href="{{ path('address_delete', {'id': address.id}) }}">Remove</a>
             <br>
         {% endfor %}
     </div>
+    <div><a href="{{ path('address_create') }}">Add Entry</a></div>
 {% endblock %}
