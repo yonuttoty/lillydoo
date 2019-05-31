@@ -14,7 +14,7 @@ body {
     font-size: 1.6rem;
 }
 
-input, button, select {
+input, button, select, a {
     font-size: 1.7rem !important;
 }
 

@@ -1,8 +1,10 @@
 {% extends '@App/base.html.twig' %}
 
+{#{% form_theme form '@App/form/fields.html.twig' %}#}
+
 {% block content %}
     <h3>Enter Contact</h3>
-    <div class="form">
+    <div class="container">
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_widget(form) }}
         <br><br>

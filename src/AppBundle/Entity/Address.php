@@ -20,41 +20,49 @@ class Address
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank
      */
     private $street;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
     private $streetNumber;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
     private $zip;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank
      */
     private $country;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
     private $phoneNumber;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank
      */
     private $birthday;
 

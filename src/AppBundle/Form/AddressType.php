@@ -29,6 +29,7 @@ class AddressType extends AbstractType
                 'label' => 'Contact Picture',
 //                'data_class' => null,
                 'required' => false,
+                'label_attr' => ['class' => 'form-horizontal']
             ]);
     }
 
