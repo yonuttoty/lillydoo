@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Service\FileUploader;
 
 /**
  * Class DefaultController
@@ -59,9 +60,10 @@ class DefaultController extends Controller
      *
      * @param Request $request
      * @param int $id
+     * @param FileUploader $fileUploader
      * @return Response
      */
-    public function editAction(Request $request, int $id): Response
+    public function editAction(Request $request, int $id, FileUploader $fileUploader): Response
     {
         /** @var Address $address */
         $address = $this->getDoctrine()
@@ -85,12 +87,7 @@ class DefaultController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $address->getPicture();
             if ($file instanceof UploadedFile) {
-                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                try {
-                    $file->move($this->getParameter('address_directory'), $fileName);
-                } catch (FileException $exception) {
-                    $fileName = '';
-                }
+                $fileName = $fileUploader->upload($file);
                 $address->setPicture($fileName);
             } else {
                 $address->setPicture($currentFile);
@@ -113,9 +110,10 @@ class DefaultController extends Controller
      * @Route("/create", name="address_create")
      *
      * @param Request $request
+     * @param FileUploader $fileUploader
      * @return Response
      */
-    public function createAction(Request $request): Response
+    public function createAction(Request $request, FileUploader $fileUploader): Response
     {
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
@@ -125,12 +123,7 @@ class DefaultController extends Controller
             // The Symfony Way but because of problems with xampp and temp files a hack was needed
             $file = $address->getPicture();
             if ($file instanceof UploadedFile) {
-                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                try {
-                    $file->move($this->getParameter('address_directory'), $fileName);
-                } catch (FileException $exception) {
-                    $fileName = '';
-                }
+                $fileName = $fileUploader->upload($file);
                 $address->setPicture($fileName);
             }
             $entityManager = $this->getDoctrine()->getManager();

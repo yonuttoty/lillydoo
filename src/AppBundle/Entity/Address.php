@@ -126,13 +126,6 @@ class Address
      * @ORM\Column(type="string", nullable=true)
      *
      * @TODO change this to easily add images :D
-     *
-     * @Assert\Image(
-     *     minWidth = 100,
-     *     maxWidth = 150,
-     *     minHeight = 100,
-     *     maxHeight = 150
-     * )
      */
     private $picture;
 
