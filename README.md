@@ -3,7 +3,7 @@ Project Lillydoo
 
 Coding challenge for Lillydoo.
 
-##Project Setup
+## Project Setup
 
 1. Clone repository
 2. Run ```composer install``` in root project dir
