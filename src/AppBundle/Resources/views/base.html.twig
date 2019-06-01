@@ -8,6 +8,7 @@
         'public/js/bootstrap/bootstrap.min.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
     {% block stylesheets %}
         <link href="{{ asset('public/css/bootstrap/bootstrap.min.css') }}" rel="stylesheet"/>
         <link href="{{ asset('public/css/main.css') }}" rel="stylesheet"/>
@@ -16,10 +17,15 @@
         <link href="{{ asset('public/css/address.css') }}" rel="stylesheet"/>
         <link href="{{ asset('public/css/item.css') }}" rel="stylesheet"/>
     {% endblock %}
+
+    {% block javascript %}
+    {% endblock javascript %}
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div>
-    <div class="title-bar">
+    <div class="title-bar sticky-top">
         <div class="wrapper"><h1>Lilydoo Coding Challenge</h1>
             <h2 class="title-bar__subtitle">Created by Ioan</h2></div>
     </div>

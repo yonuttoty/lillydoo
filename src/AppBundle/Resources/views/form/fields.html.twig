@@ -1,11 +1,17 @@
 {% block form_row %}
     {% spaceless %}
-        <div class="form-group row">
+        <div class="form-group">
             {{ form_label(form) }}
+            {{ form_widget(form) }}
             {{ form_errors(form) }}
-            <div class="col-sm-10">
-                {{ form_widget(form) }}
-            </div>
         </div>
     {% endspaceless %}
 {% endblock form_row %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% for error in errors %}
+            <div class="invalid-feedback">{{ error.message }}</div>
+        {% endfor %}
+    {% endspaceless %}
+{% endblock %}

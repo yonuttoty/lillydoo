@@ -1,21 +1,44 @@
 {% extends '@App/base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('public/css/form.css') }}" rel="stylesheet"/>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+{% endblock stylesheets %}
+
+{% block javascript %}
+{{ parent() }}
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $('.datepicker').datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-mm-dd'
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
-    <div class="form-group">
-        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-            {{ form_row(form.firstName, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.lastName, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.street, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.streetNumber, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.zip, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.country, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.phoneNumber, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.birthday, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.email, { 'attr': { 'class': 'form-control' }}) }}
-            {{ form_row(form.picture, { 'attr': { 'class': 'form-control' }}) }}
+    <div class="container">
+        {{ form_start(form) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.street) }}
+            {{ form_row(form.streetNumber) }}
+            {{ form_row(form.zip) }}
+            {{ form_row(form.country) }}
+            {{ form_row(form.phoneNumber) }}
+            {{ form_row(form.birthday) }}
+            {{ form_row(form.email) }}
+            <div class="custom-file">
+                {{ form_row(form.picture) }}
+            </div>
             <br><br>
-            <input type="submit" value="Save" class="btn btn-primary">
-            <a href="{{ path('address_homepage') }}" class="btn badge-danger">Back</a>
+            <div class="button-group d-block mx-2 my-2 clearfix">
+                {{ form_row(form.edit, { 'attr': { 'class': 'btn btn-outline-primary btn-lg float-left' } }) }}
+                <a href="{{ path('address_homepage') }}" class="btn btn-outline-danger btn-lg float-right">Back</a>
+            </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}

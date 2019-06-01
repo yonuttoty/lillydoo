@@ -20,43 +20,86 @@ class Address
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Please enter a first name.")
+     * @Assert\Type("string", message="The value {{ value }} is not a valid {{ type }} .")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "First name must be at least {{ limit }} letters long",
+     *      maxMessage = "First name cannot exceed {{ limit }} letters long"
+     * )
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Please enter a last name.")
+     * @Assert\Type("string", message="The value {{ value }} is not a valid {{ type }} .")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 25,
+     *      minMessage = "Last name must be at least {{ limit }} letters long",
+     *      maxMessage = "Last name cannot exceed {{ limit }} letters long"
+     * )
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Please enter a street name.")
+     * @Assert\Type("string", message="The value {{ value }} is not a valid {{ type }} .")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "Street name must be at least {{ limit }} letters long",
+     *      maxMessage = "Street name cannot exceed {{ limit }} letters long"
+     * )
      */
     private $street;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Please enter a street name.")
+     * @Assert\Type("interger", message="The value {{ value }} is not a valid {{ type }} .")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 180,
+     *      minMessage = "Number must be greater than {{ limit }}",
+     *      maxMessage = "Number must be smaller than {{ limit }}"
+     * )
      */
     private $streetNumber;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Please enter a zip code.")
+     * @Assert\Type("interger", message="The value {{ value }} is not a valid {{ type }} .")
      */
     private $zip;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Please enter a country.")
+     * @Assert\Type("string", message="The value {{ value }} is not a valid {{ type }} .")
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 100,
+     *      minMessage = "Country name must be at least {{ limit }} letters long",
+     *      maxMessage = "Country name cannot exceed {{ limit }} letters long"
+     * )
      */
     private $country;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Please enter a phone number.")
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 18,
+     *      minMessage = "Phone number must be at least {{ limit }} numbers long",
+     *      maxMessage = "Phone number cannot exceed {{ limit }} numbers long"
+     * )
+     * @Assert\Type("integer", message="The value {{ value }} is not a valid {{ type }} .")
      */
     private $phoneNumber;
 
@@ -67,16 +110,29 @@ class Address
     private $birthday;
 
     /**
-     * @Assert\NotBlank(message="Please, set an email.")
-     *
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Please, set an email.")
+     * @Assert\Email(message="Email is not valid. Please enter a valid email.")
+     * @Assert\Length(
+     *      min = 6,
+     *      max = 50,
+     *      minMessage = "Email must be at least {{ limit }} characters long",
+     *      maxMessage = "Email cannot exceed {{ limit }} characters long"
+     * )
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @Assert\Image()
+     * @TODO change this to easily add images :D
+     *
+     * @Assert\Image(
+     *     minWidth = 100,
+     *     maxWidth = 150,
+     *     minHeight = 100,
+     *     maxHeight = 150
+     * )
      */
     private $picture;
 
@@ -107,7 +163,7 @@ class Address
     /**
      * @param string $firstName
      */
-    public function setFirstName(string $firstName)
+    public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
     }
@@ -123,7 +179,7 @@ class Address
     /**
      * @param string $lastName
      */
-    public function setLastName(string $lastName)
+    public function setLastName($lastName)
     {
         $this->lastName = $lastName;
     }
@@ -139,7 +195,7 @@ class Address
     /**
      * @param string $street
      */
-    public function setStreet(string $street)
+    public function setStreet($street)
     {
         $this->street = $street;
     }
@@ -155,7 +211,7 @@ class Address
     /**
      * @param int $streetNumber
      */
-    public function setStreetNumber(int $streetNumber)
+    public function setStreetNumber($streetNumber)
     {
         $this->streetNumber = $streetNumber;
     }
@@ -171,7 +227,7 @@ class Address
     /**
      * @param int $zip
      */
-    public function setZip(int $zip)
+    public function setZip($zip)
     {
         $this->zip = $zip;
     }
@@ -187,7 +243,7 @@ class Address
     /**
      * @param string $country
      */
-    public function setCountry(string $country)
+    public function setCountry($country)
     {
         $this->country = $country;
     }
@@ -203,7 +259,7 @@ class Address
     /**
      * @param int $phoneNumber
      */
-    public function setPhoneNumber(int $phoneNumber)
+    public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
     }
@@ -219,7 +275,7 @@ class Address
     /**
      * @param \DateTime $birthday
      */
-    public function setBirthday(\DateTime $birthday)
+    public function setBirthday($birthday)
     {
         $this->birthday = $birthday;
     }
@@ -235,7 +291,7 @@ class Address
     /**
      * @param string $email
      */
-    public function setEmail(string $email)
+    public function setEmail($email)
     {
         $this->email = $email;
     }

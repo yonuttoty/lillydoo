@@ -1,26 +1,51 @@
 {% extends '@App/base.html.twig' %}
 {% block content %}
     {% for message in app.flashes('success') %}
-        <div class="flash-notice">
-            {{ message }}
+        <div class="alert alert-success alert-dismissible">
+            <button class="close" type="button" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+            {{ message|capitalize }}
         </div>
     {% endfor %}
-
-    {% for address in addresses %}
-        <div class="item">
-            <div class="address">
-                {% if address.getPicture is not empty %}
-                    <img src="{{ asset('public/uploads/images/' ~ address.getPicture) }}" width="200" height="100"
-                         alt="Face"/>
-                {% endif %}
-                <p>First Name: {{ address.getFirstName }}</p>
-                <p>Last Name: {{ address.getLastName }}</p>
-                <p>Email: {{ address.getEmail }}</p>
-                <br>
+    <div class="container">
+        {% for address in addresses %}
+            <div class="card bg-light flex-row flex-wrap mb-5 text-dark border-danger border-3">
+                <div class="card-header border-0">
+                    {% if address.getPicture is not empty %}
+                        <img
+                                src="{{ asset('public/uploads/images/' ~ address.getPicture) }}" width="150px"
+                                height="150px"
+                                alt="Contact Image"/>
+                    {% else %}
+                        <img src="//placehold.it/200" alt="" width="150px" height="150px">
+                    {% endif %}
+                </div>
+                <div class="card-block px-2 ml-4">
+                    <div class="row">
+                        <div class="col pt-2">
+                            <p class="card-text">Name: {{ address.getFirstName ~ ' ' ~ address.getLastName }} </p>
+                            <p class="card-text">Email: {{ address.getEmail }}</p>
+                            <p class="card-text">Street: {{ address.getStreet }}</p>
+                            <p class="card-text">Street Number: {{ address.getStreetNumber }}</p></div>
+                        <div class="col pt-2">
+                            <p class="card-text">Zip Code: {{ address.getZip }}</p>
+                            <p class="card-text">Country: {{ address.getCountry }}</p>
+                            <p class="card-text">Birthday: {{ address.getBirthday|date("Y-m-d") }}</p>
+                        </div>
+                    </div>
+                    <div class="row button-group d-block mx-2 my-2 clearfix">
+                        <div class="col">
+                            <a href="{{ path('address_edit', {'id': address.id}) }}"
+                               class="btn btn-outline-info float-left">Edit</a>
+                            <a href="{{ path('address_delete', {'id': address.id}) }}"
+                               class="btn btn-outline-danger float-right">Remove</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <a href="{{ path('address_edit', {'id': address.id}) }}">Edit</a>
-            <a href="{{ path('address_delete', {'id': address.id}) }}">Remove</a>
+        {% endfor %}
+        <div class="my-4 d-block"><a href="{{ path('address_create') }}" class="btn btn-outline-success btn-block">Add Entry</a>
         </div>
-    {% endfor %}
-    <div><a href="{{ path('address_create') }}">Add Entry</a></div>
+    </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -16,20 +16,60 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
-            ->add('street', TextType::class)
-            ->add('streetNumber', IntegerType::class)
-            ->add('zip', IntegerType::class)
-            ->add('country', TextType::class)
-            ->add('phoneNumber', IntegerType::class)
-            ->add('birthday', DateType::class)
-            ->add('email', EmailType::class)
+            ->add('firstName', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('lastName', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('street', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('streetNumber', IntegerType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('zip', IntegerType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('country', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('phoneNumber', IntegerType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('birthday', BirthdayType::class, [
+                'attr' => [
+                    'class' => 'form-control datepicker'
+//                    'class' => 'form-control'
+                ],
+                'widget' => 'single_text',
+                'format' => 'yyyy-mm-dd',
+                'html5' => false
+            ])
+            ->add('email', EmailType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
             ->add('picture', FileType::class, [
                 'label' => 'Contact Picture',
-//                'data_class' => null,
                 'required' => false,
-                'label_attr' => ['class' => 'form-horizontal']
+                'attr' => ['class' => 'custom-file-input'],
+                'label_attr' => ['class' => 'custom-file-label']
             ]);
     }
 

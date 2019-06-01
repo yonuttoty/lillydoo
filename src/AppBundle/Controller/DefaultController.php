@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Address;
 use AppBundle\Form\AddressType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,6 +76,7 @@ class DefaultController extends Controller
         }
 
         $form = $this->createForm(AddressType::class, $address);
+        $form->add('edit', SubmitType::class);
 
         //https://github.com/symfony/symfony/issues/16489
         // Hack used to submit the form manually without clearing the fields
@@ -116,6 +118,7 @@ class DefaultController extends Controller
     {
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
+        $form->add('create', SubmitType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if (!empty($request->files)) {
