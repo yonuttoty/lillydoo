@@ -7,6 +7,7 @@ use AppBundle\Form\AddressType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,6 +70,8 @@ class DefaultController extends Controller
                 'id' => $id
             ]);
 
+        $currentFile = $address->getPicture();
+
         if (!empty($address->getPicture())) {
             $address->setPicture(new File(
                 $this->getParameter('address_directory') . '/' . $address->getPicture()
@@ -78,29 +81,27 @@ class DefaultController extends Controller
         $form = $this->createForm(AddressType::class, $address);
         $form->add('edit', SubmitType::class);
 
-        //https://github.com/symfony/symfony/issues/16489
-        // Hack used to submit the form manually without clearing the fields
-        if ($request->isMethod('POST')) {
-            $form->submit($request->request->get($form->getName()), false);
-            if ($form->isSubmitted() && $form->isValid()) {
-                if (!empty($address->getPicture())) {
-                    $file = new File($address->getPicture());
-                    $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                    try {
-                        $file->move($this->getParameter('address_directory'), $fileName);
-                    } catch (FileException $exception) {
-                        $fileName = '';
-                    }
-                    $address->setPicture($fileName);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $address->getPicture();
+            if ($file instanceof UploadedFile) {
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                try {
+                    $file->move($this->getParameter('address_directory'), $fileName);
+                } catch (FileException $exception) {
+                    $fileName = '';
                 }
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($address);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Address updated successfully.');
-
-                return $this->redirectToRoute('address_homepage');
+                $address->setPicture($fileName);
+            } else {
+                $address->setPicture($currentFile);
             }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($address);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Address updated successfully.');
+
+            return $this->redirectToRoute('address_homepage');
         }
 
         return $this->render('@App/address/edit.html.twig', [
@@ -121,25 +122,17 @@ class DefaultController extends Controller
         $form->add('create', SubmitType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!empty($request->files)) {
-                if (!empty($address->getPicture())) {
-                    $file = new File($address->getPicture());
-                    $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                    try {
-                        $file->move($this->getParameter('address_directory'), $fileName);
-                    } catch (FileException $exception) {
-                        $fileName = '';
-                    }
-                    $address->setPicture($fileName);
-                }
-            }
-
             // The Symfony Way but because of problems with xampp and temp files a hack was needed
-//            if ($file instanceof UploadedFile) {
-//                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-//                $file->move($this->getParameter('address_directory'), $file->getClientOriginalName());
-//                $address->setPicture($fileName);
-//            }
+            $file = $address->getPicture();
+            if ($file instanceof UploadedFile) {
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                try {
+                    $file->move($this->getParameter('address_directory'), $fileName);
+                } catch (FileException $exception) {
+                    $fileName = '';
+                }
+                $address->setPicture($fileName);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($address);
             $entityManager->flush();
