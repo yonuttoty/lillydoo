@@ -60,20 +60,20 @@ class Address
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Please enter a street name.")
-     * @Assert\Type("interger", message="The value {{ value }} is not a valid {{ type }} .")
      * @Assert\Range(
      *      min = 0,
      *      max = 180,
      *      minMessage = "Number must be greater than {{ limit }}",
      *      maxMessage = "Number must be smaller than {{ limit }}"
      * )
+     * @Assert\Type("integer", message="The value {{ value }} is not a valid {{ type }} .")
      */
     private $streetNumber;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Please enter a zip code.")
-     * @Assert\Type("interger", message="The value {{ value }} is not a valid {{ type }} .")
+     * @Assert\Type("integer", message="The value {{ value }} is not a valid {{ type }} .")
      */
     private $zip;
 
